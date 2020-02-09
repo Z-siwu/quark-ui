@@ -106,7 +106,7 @@ class AdminLayout extends Component<IProps> {
           style={{
             height:'100vh',
           }}
-          title={'FullStack'}
+          title={'Quark'}
           menuDataRender={() => menus}
           fixedHeader={true}
           fixSiderbar={true}

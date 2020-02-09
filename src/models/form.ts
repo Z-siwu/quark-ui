@@ -12,7 +12,8 @@ export interface ModelType {
   state: {
     title:string,
     loading:boolean,
-    controls:any
+    layout:any,
+    items:any
   };
   subscriptions:{ setup: Subscription };
   effects: {
@@ -20,9 +21,9 @@ export interface ModelType {
     submit: Effect;
   };
   reducers: {
-    updateState: Reducer<{}>;
-    resetState: Reducer<{}>;
-    pageLoading: Reducer<{}>;
+    updateForm: Reducer<{}>;
+    resetForm: Reducer<{}>;
+    changePageLoading: Reducer<{}>;
   };
 }
 
@@ -31,7 +32,8 @@ const form: ModelType = {
   state: {
     title:'',
     loading:true,
-    controls: [],
+    layout: [],
+    items: [],
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -43,7 +45,7 @@ const form: ModelType = {
   effects: {
     *info({ payload, callback }, { put, call }) {
       yield put({
-        type: 'pageLoading',
+        type: 'changePageLoading',
         payload: { loading:true},
       });
       const response = yield call(get, payload);
@@ -53,7 +55,7 @@ const form: ModelType = {
       if (response.status === 'success') {
         const data = { ...response.data, loading:false};
         yield put({
-          type: 'updateState',
+          type: 'updateForm',
           payload: data,
         });
         if (callback && typeof callback === 'function') {
@@ -83,25 +85,28 @@ const form: ModelType = {
     },
   },
   reducers: {
-    updateState(state, action) {
+    updateForm(state, action) {
       return {
         ...action.payload,
       };
     },
-    resetState(state, action) {
+    resetForm(state, action) {
       let resetState = {
           title:'',
           loading:true,
-          controls: [],
+          layout:[],
+          items:[],
         }
         return {
           ...resetState,
         };
       },
-    pageLoading(state, action) {
-      state.loading = action.payload.loading;
+    changePageLoading(state, action) {
+      let pageLoading = {
+        loading:action.payload.loading
+      }
       return {
-        ...state,
+        ...pageLoading,
       };
     },
   },

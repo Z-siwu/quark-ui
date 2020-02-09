@@ -21,7 +21,7 @@ class LoginLayout extends Component<IProps> {
           <div className={styles.top}>
             <div className={styles.header}>
                 <img alt="logo" className={styles.logo} src={logo} />
-                <span className={styles.title}>FullStack</span>
+                <span className={styles.title}>Quark</span>
             </div>
             <div className={styles.desc}><p>在信息丰富的世界里，唯一稀缺的资源就是人类的注意力。</p></div>
           </div>

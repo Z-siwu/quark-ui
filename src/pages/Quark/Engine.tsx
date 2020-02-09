@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import FormPage from '@/components/PlanetUI/FormPage';
+import FormPage from '@/components/QuarkUI/FormPage';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { stringify } from 'qs';
 

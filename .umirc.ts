@@ -19,7 +19,7 @@ const config: IConfig =  {
         { path: '/', component: '../pages/Dashboard/Index' },
         { path: '/index', component: '../pages/Dashboard/Index' },
         { path: '/dashboard/index', component: '../pages/Dashboard/Index' },
-        { path: '/planet/engine', component: '../pages/Planet/Engine' }
+        { path: '/quark/engine', component: '../pages/Quark/Engine' }
       ]
     }
   ],
@@ -29,7 +29,7 @@ const config: IConfig =  {
       antd: true,
       dva: true,
       dynamicImport: false,
-      title: 'fullstack-frontend',
+      title: 'quark',
       dll: false,
       
       routes: {

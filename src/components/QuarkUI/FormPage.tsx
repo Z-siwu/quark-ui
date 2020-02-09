@@ -34,8 +34,9 @@ const { TreeNode } = Tree;
 export interface FormPageProps {
   title:string;
   loading: boolean;
-  controls?: [];
   api?: string;
+  layout?: [];
+  items?: [];
   submitting: boolean;
   dispatch: Dispatch<any>;
 }
@@ -46,22 +47,28 @@ const FormPage: React.SFC<FormPageProps> = props => {
     title,
     loading,
     api,
+    layout,
+    items,
     dispatch
   } = props;
+
+  const [form] = Form.useForm();
 
   /**
    * constructor
    */
   useEffect(() => {
-    if (dispatch) {
-      dispatch({
-        type: 'form/info',
-        payload: {
-          actionUrl: api,
-        }
-      });
-    }
+    dispatch({
+      type: 'form/info',
+      payload: {
+        actionUrl: api,
+      }
+    });
   }, [dispatch, api]);
+
+  const onReset = () => {
+    form.resetFields();
+  };
 
   const onFinish = (values:any) => {
     dispatch({
@@ -69,41 +76,58 @@ const FormPage: React.SFC<FormPageProps> = props => {
       payload: {
         actionUrl: 'admin/login',
         ...values
-      },
-      callback: (res: any) => {
-
-      },
+      }
     });
   };
 
   return (
-  <Spin spinning={loading} tip="Loading..." style={{background:'#fff'}}>
+    <Spin spinning={loading} tip="Loading..." style={{background:'#fff'}}>
       <Card
         size="small"
         title={title}
         bordered={false}
         extra={<Button type="link" onClick={(e) => router.go(-1)}>返回上一页</Button>}
       >
-        <Form onFinish={onFinish}>
+        <Form {...layout} form={form} onFinish={onFinish}>
+          {!!items && items.map((item:any) => {
+            if(item.component == 'input') {
+              return (
+                <Form.Item
+                  key={item.name}
+                  label={item.label}
+                  name={item.name}
+                  rules={item.rules}
+                >
+                  <Input
+                    placeholder={item.placeholder}
+                    style={item.style ? item.style : []}
+                  />
+                </Form.Item>
+              )
+            }
+          })}
           <Form.Item
-            name="username"
-            rules={[{ required: true, message: '用户名必须填写！' }]}
+            wrapperCol={
+              { offset: 3, span: 21 }
+            }
           >
-            <Input
-              placeholder="用户名"
-            />
-          </Form.Item>
-          <Form.Item>
             <Button
               type="primary"
               htmlType="submit"
             >
               提交
             </Button>
+            <Button 
+              htmlType="button"
+              onClick={onReset}
+              style={{marginLeft:'8px'}}
+            >
+              重置
+            </Button>
           </Form.Item>
         </Form>
       </Card>
-  </Spin>
+    </Spin>
   );
 };
 
@@ -111,13 +135,15 @@ function mapStateToProps(state:any) {
   const {
     title,
     loading,
-    controls,
+    layout,
+    items,
   } = state.form;
 
   return {
     title,
     loading,
-    controls,
+    layout,
+    items,
   };
 }
 
